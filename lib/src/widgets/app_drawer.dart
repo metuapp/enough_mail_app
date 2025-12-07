@@ -13,7 +13,6 @@ import '../extensions/extension_action_tile.dart';
 import '../localization/app_localizations.g.dart';
 import '../localization/extension.dart';
 import '../routes/routes.dart';
-import '../settings/theme/icon_service.dart';
 import '../util/localized_dialog_helper.dart';
 import 'generic_header.dart';
 import 'mailbox_tree.dart';
@@ -31,16 +30,13 @@ class AppDrawer extends ConsumerWidget {
     final currentAccount = ref.watch(currentAccountProvider);
     final hasAccountsWithErrors = ref.watch(hasAccountWithErrorProvider);
 
-    // Get account name for header
-    final accountName = currentAccount?.name ?? localizations.accountsTitle;
-
     return PlatformDrawer(
       child: SafeArea(
         child: Column(
           children: [
             // Use GenericHeader at the top of drawer
             GenericHeader(
-              title: accountName,
+              title: 'METU Mail',
               trailingButton: IconButton(
                 icon: const Icon(HugeIcons.strokeRoundedSettings01),
                 onPressed: () {
