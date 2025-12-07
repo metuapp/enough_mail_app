@@ -5,6 +5,7 @@ import 'package:enough_platform_widgets/enough_platform_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 import '../account/model.dart';
 import '../account/provider.dart';
@@ -27,7 +28,6 @@ class AppDrawer extends ConsumerWidget {
     final accounts = ref.watch(allAccountsProvider);
     final theme = Theme.of(context);
     final localizations = ref.text;
-    final iconService = IconService.instance;
     final currentAccount = ref.watch(currentAccountProvider);
     final hasAccountsWithErrors = ref.watch(hasAccountWithErrorProvider);
 
@@ -42,7 +42,7 @@ class AppDrawer extends ConsumerWidget {
             GenericHeader(
               title: accountName,
               trailingButton: IconButton(
-                icon: Icon(iconService.settings),
+                icon: const Icon(HugeIcons.strokeRoundedSettings01),
                 onPressed: () {
                   if (!useAppDrawerAsRoot) {
                     context.pop();
@@ -88,7 +88,7 @@ class AppDrawer extends ConsumerWidget {
                         ),
                       const Divider(),
                       PlatformListTile(
-                        leading: Icon(iconService.about),
+                        leading: const Icon(HugeIcons.strokeRoundedHelpCircle),
                         title: Text(localizations.drawerEntryAbout),
                         onTap: () {
                           LocalizedDialogHelper.showAbout(
@@ -220,7 +220,7 @@ class AppDrawer extends ConsumerWidget {
     AppLocalizations localizations,
   ) =>
       PlatformListTile(
-        leading: const Icon(Icons.add),
+        leading: const Icon(HugeIcons.strokeRoundedCalendarAdd01),
         title: Text(localizations.drawerEntryAddAccount),
         onTap: () {
           if (!useAppDrawerAsRoot) {

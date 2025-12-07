@@ -82,7 +82,7 @@ class ThemeFinder extends _$ThemeFinder {
     // METU primary blue color
     const metuPrimaryBlue = Color.fromRGBO(67, 89, 120, 1);
     const metuPrimaryRed = Color.fromRGBO(159, 66, 100, 1);
-    
+
     if (brightness == Brightness.light) {
       // Light theme matching METU app
       return ThemeData(
@@ -154,12 +154,11 @@ class ThemeFinder extends _$ThemeFinder {
   ) {
     // METU primary blue color
     const metuPrimaryBlue = Color.fromRGBO(67, 89, 120, 1);
-    
+
     return CupertinoThemeData(
       brightness: brightness,
-      primaryColor: brightness == Brightness.dark
-          ? Colors.white
-          : metuPrimaryBlue,
+      primaryColor:
+          brightness == Brightness.dark ? Colors.white : metuPrimaryBlue,
     );
   }
 }

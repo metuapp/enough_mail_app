@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 import '../account/provider.dart';
 import '../localization/app_localizations.g.dart';
@@ -153,7 +154,7 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
     final appBarActions = [
       if (_isInSearchMode && _hasSearchInput)
         IconButton(
-          icon: Icon(CommonPlatformIcons.clear),
+          icon: const Icon(HugeIcons.strokeRoundedCancel01),
           onPressed: () {
             _searchEditingController.text = '';
             setState(() {
@@ -164,7 +165,9 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
 
       if (source.supportsSearching && !PlatformInfo.isCupertino)
         PlatformIconButton(
-          icon: Icon(_isInSearchMode ? Icons.arrow_back : Icons.search),
+          icon: Icon(_isInSearchMode
+              ? HugeIcons.strokeRoundedArrowLeft02
+              : HugeIcons.strokeRoundedSearch01),
           onPressed: () {
             if (_isInSearchMode) {
               setState(() {
@@ -665,7 +668,7 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
                 onPressed: () => _handleMultipleChoice(_MultipleChoice.delete),
               ),
             PlatformIconButton(
-              icon: const Icon(Icons.close),
+              icon: const Icon(HugeIcons.strokeRoundedCancel01),
               onPressed: leaveSelectionMode,
             ),
             PlatformPopupMenuButton<_MultipleChoice>(

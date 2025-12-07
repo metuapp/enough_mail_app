@@ -109,7 +109,7 @@ final class ThemeFinderProvider
   }
 }
 
-String _$themeFinderHash() => r'93ef07849b7171177a4ae6bf146c6ab42253c5d6';
+String _$themeFinderHash() => r'c92545bdb8b06520cd5054fbee7a682dc82ea856';
 
 /// Provides the settings
 
