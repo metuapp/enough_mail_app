@@ -14,6 +14,7 @@ import '../localization/extension.dart';
 import '../routes/routes.dart';
 import '../settings/theme/icon_service.dart';
 import '../util/localized_dialog_helper.dart';
+import 'generic_header.dart';
 import 'mailbox_tree.dart';
 
 /// Displays the base navigation drawer with all accounts
@@ -30,21 +31,30 @@ class AppDrawer extends ConsumerWidget {
     final currentAccount = ref.watch(currentAccountProvider);
     final hasAccountsWithErrors = ref.watch(hasAccountWithErrorProvider);
 
+    // Get account name for header
+    final accountName = currentAccount?.name ?? localizations.accountsTitle;
+
     return PlatformDrawer(
       child: SafeArea(
         child: Column(
           children: [
-            Material(
-              elevation: 18,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: _buildAccountHeader(
-                  context,
-                  currentAccount,
-                  accounts,
-                  theme,
-                ),
+            // Use GenericHeader at the top of drawer
+            GenericHeader(
+              title: accountName,
+              trailingButton: IconButton(
+                icon: Icon(iconService.settings),
+                onPressed: () {
+                  if (!useAppDrawerAsRoot) {
+                    context.pop();
+                  }
+                  context.pushNamed(Routes.settings);
+                },
               ),
+              onBackPressed: useAppDrawerAsRoot
+                  ? null
+                  : () {
+                      context.pop();
+                    },
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -52,6 +62,17 @@ class AppDrawer extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Show account details below header
+                      if (currentAccount != null)
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: _buildAccountDetails(
+                            context,
+                            currentAccount,
+                            accounts,
+                            theme,
+                          ),
+                        ),
                       _buildAccountSelection(
                         context,
                         accounts,
@@ -80,31 +101,18 @@ class AppDrawer extends ConsumerWidget {
                 ),
               ),
             ),
-            Material(
-              elevation: 18,
-              child: PlatformListTile(
-                leading: Icon(iconService.settings),
-                title: Text(localizations.drawerEntrySettings),
-                onTap: () {
-                  context.pushNamed(Routes.settings);
-                },
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildAccountHeader(
+  Widget _buildAccountDetails(
     BuildContext context,
-    Account? currentAccount,
+    Account currentAccount,
     List<Account> accounts,
     ThemeData theme,
   ) {
-    if (currentAccount == null) {
-      return const SizedBox.shrink();
-    }
     final avatarAccount = currentAccount is RealAccount
         ? currentAccount
         : (currentAccount is UnifiedAccount
@@ -123,7 +131,7 @@ class AppDrawer extends ConsumerWidget {
     final accountNameWithBadge =
         hasError ? badges.Badge(child: accountName) : accountName;
 
-    return PlatformListTile(
+    return InkWell(
       onTap: () {
         if (currentAccount is UnifiedAccount) {
           context.pushNamed(Routes.settingsAccounts);
@@ -136,7 +144,7 @@ class AppDrawer extends ConsumerWidget {
           );
         }
       },
-      title: avatarAccount == null
+      child: avatarAccount == null
           ? const SizedBox.shrink()
           : Row(
               children: [

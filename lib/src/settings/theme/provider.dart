@@ -10,8 +10,10 @@ import 'model.dart';
 part 'provider.g.dart';
 
 /// The default color provider
+/// Using METU primary blue instead of green
 @Riverpod(keepAlive: true)
-Color defaultColorSeed(Ref ref) => Colors.green;
+Color defaultColorSeed(Ref ref) =>
+    const Color.fromRGBO(67, 89, 120, 1); // METU primaryBlue
 
 /// Provides the settings
 @Riverpod(keepAlive: true)
@@ -76,25 +78,88 @@ class ThemeFinder extends _$ThemeFinder {
     }
   }
 
-  static ThemeData _generateMaterialTheme(Brightness brightness, Color color) =>
-      color is MaterialColor
-          ? ThemeData(
-              brightness: brightness,
-              primarySwatch: color,
-              useMaterial3: false,
-            )
-          : ThemeData(
-              brightness: brightness,
-              colorSchemeSeed: color,
-              useMaterial3: true,
-            );
+  static ThemeData _generateMaterialTheme(Brightness brightness, Color color) {
+    // METU primary blue color
+    const metuPrimaryBlue = Color.fromRGBO(67, 89, 120, 1);
+    const metuPrimaryRed = Color.fromRGBO(159, 66, 100, 1);
+    
+    if (brightness == Brightness.light) {
+      // Light theme matching METU app
+      return ThemeData(
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: Colors.white,
+        primaryColor: Colors.white,
+        colorScheme: const ColorScheme.light(
+          primary: metuPrimaryBlue,
+          secondary: metuPrimaryRed,
+          surface: Colors.white,
+          onSurface: metuPrimaryBlue,
+          inverseSurface: Colors.black,
+        ),
+        cardColor: Colors.white,
+        iconTheme: const IconThemeData(color: metuPrimaryBlue),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: metuPrimaryBlue,
+            foregroundColor: Colors.white,
+          ),
+        ),
+        chipTheme: ChipThemeData(
+          backgroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 4),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          side: BorderSide.none,
+        ),
+        useMaterial3: true,
+      );
+    }
+    // Dark theme matching METU app
+    return ThemeData(
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: const Color(0xFF202326),
+      primaryColor: const Color(0xFF121212),
+      colorScheme: ColorScheme.dark(
+        primary: Colors.white,
+        secondary: Colors.deepPurpleAccent,
+        surface: Colors.grey.shade900,
+        onSurface: Colors.grey.shade300,
+        inverseSurface: Colors.white,
+      ),
+      cardColor: const Color.fromARGB(255, 26, 26, 26),
+      iconTheme: IconThemeData(color: Colors.grey.shade300),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromARGB(255, 26, 26, 26),
+          foregroundColor: Colors.white,
+        ),
+      ),
+      chipTheme: ChipThemeData(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        labelPadding: const EdgeInsets.symmetric(horizontal: 4),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        side: BorderSide.none,
+      ),
+      useMaterial3: true,
+    );
+  }
 
   static CupertinoThemeData _generateCupertinoTheme(
     Brightness brightness,
     Color color,
-  ) =>
-      CupertinoThemeData(
-        brightness: brightness,
-        primaryColor: color,
-      );
+  ) {
+    // METU primary blue color
+    const metuPrimaryBlue = Color.fromRGBO(67, 89, 120, 1);
+    
+    return CupertinoThemeData(
+      brightness: brightness,
+      primaryColor: brightness == Brightness.dark
+          ? Colors.white
+          : metuPrimaryBlue,
+    );
+  }
 }

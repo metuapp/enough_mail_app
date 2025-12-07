@@ -9,15 +9,18 @@ part of 'provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 /// The default color provider
+/// Using METU primary blue instead of green
 
 @ProviderFor(defaultColorSeed)
 const defaultColorSeedProvider = DefaultColorSeedProvider._();
 
 /// The default color provider
+/// Using METU primary blue instead of green
 
 final class DefaultColorSeedProvider
     extends $FunctionalProvider<Color, Color, Color> with $Provider<Color> {
   /// The default color provider
+  /// Using METU primary blue instead of green
   const DefaultColorSeedProvider._()
       : super(
           from: null,
@@ -51,7 +54,7 @@ final class DefaultColorSeedProvider
   }
 }
 
-String _$defaultColorSeedHash() => r'bfa15570c45b949a059e52d778b36a44770b9667';
+String _$defaultColorSeedHash() => r'a0a9a76470a49c5175c78e687ef3ee5b4b3d5746';
 
 /// Provides the settings
 
@@ -106,7 +109,7 @@ final class ThemeFinderProvider
   }
 }
 
-String _$themeFinderHash() => r'6bf8bd2d9c39da08e69265ee30cfab767b117541';
+String _$themeFinderHash() => r'93ef07849b7171177a4ae6bf146c6ab42253c5d6';
 
 /// Provides the settings
 

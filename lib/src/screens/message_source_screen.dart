@@ -351,22 +351,42 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
                   child: CustomScrollView(
                     physics: const BouncingScrollPhysics(),
                     slivers: [
-                      EnoughPlatformSliverAppBar(
-                        stretch: true,
-                        title: appBarTitle,
-                        leading: hasAccountWithError
-                            ? MenuWithBadge(
-                                iOSText:
-                                    '\u2329 ${localizations.accountsTitle}',
-                              )
-                            : null,
-                        previousPageTitle:
-                            source.parentName ?? localizations.accountsTitle,
-                        floating: !_isInSearchMode,
-                        pinned: _isInSearchMode,
-                        actions: appBarActions,
-                        cupertinoTransitionBetweenRoutes: true,
+                      // Use GenericHeader for METU app styling
+                      SliverToBoxAdapter(
+                        child: GenericHeader(
+                          title: _isInSearchMode
+                              ? localizations.homeSearchHint
+                              : source.localizedName(localizations, settings),
+                          trailingButton: appBarActions.isNotEmpty
+                              ? appBarActions.last
+                              : const SizedBox(width: 48),
+                          secondTrailingButton: appBarActions.length > 1
+                              ? appBarActions[appBarActions.length - 2]
+                              : const SizedBox(width: 48),
+                          onBackPressed: hasAccountWithError
+                              ? () {
+                                  Scaffold.of(context).openDrawer();
+                                }
+                              : (_isInSearchMode
+                                  ? () {
+                                      setState(() {
+                                        _isInSearchMode = false;
+                                      });
+                                    }
+                                  : null),
+                        ),
                       ),
+                      // Show search field below header when in search mode
+                      if (_isInSearchMode && appBarTitle is TextField)
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 8,
+                            ),
+                            child: appBarTitle,
+                          ),
+                        ),
                       if (showSearchTextField)
                         SliverToBoxAdapter(
                           child: Padding(

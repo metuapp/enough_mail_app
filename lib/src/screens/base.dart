@@ -5,8 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../account/provider.dart';
-import '../widgets/app_drawer.dart';
-import '../widgets/menu_with_badge.dart';
+import '../widgets/widgets.dart';
 
 /// Provides a basic page layout with an app bar and a drawer.
 class BasePage extends ConsumerWidget {
@@ -53,18 +52,24 @@ class BasePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    PlatformAppBar? buildAppBar() {
-      final title = this.title;
+    // Use GenericHeader for Material platform, PlatformAppBar for Cupertino
+    final shouldUseGenericHeader = !PlatformInfo.isCupertino &&
+        (title != null || subtitle != null || appBarActions != null);
 
+    PlatformAppBar? buildAppBar() {
+      if (shouldUseGenericHeader) {
+        // For Material, we'll use Scaffold with GenericHeader
+        return null;
+      }
+
+      // For Cupertino, use PlatformAppBar
+      final title = this.title;
       if (title == null && subtitle == null && appBarActions == null) {
         return null;
       }
       final floatingActionButton = this.floatingActionButton;
 
       return PlatformAppBar(
-        material: (context, platform) => MaterialAppBarData(
-          elevation: 0,
-        ),
         cupertino: (context, platform) => CupertinoNavigationBarData(
           transitionBetweenRoutes: false,
           trailing: floatingActionButton == null
@@ -88,6 +93,38 @@ class BasePage extends ConsumerWidget {
       );
     }
 
+    // Build GenericHeader for Material platform
+    PreferredSizeWidget? genericHeader;
+    if (shouldUseGenericHeader) {
+      final titleText = title ?? '';
+      final actions = appBarActions ?? [];
+      genericHeader = GenericHeader(
+        title: subtitle != null ? '$titleText\n$subtitle' : titleText,
+        trailingButton:
+            actions.isNotEmpty ? actions.last : const SizedBox(width: 48),
+        secondTrailingButton: actions.length > 1
+            ? actions[actions.length - 2]
+            : const SizedBox(width: 48),
+        onBackPressed: (includeDrawer && ref.watch(hasAccountWithErrorProvider))
+            ? () {
+                Scaffold.of(context).openDrawer();
+              }
+            : null,
+      );
+    }
+
+    // Use regular Scaffold for Material when using GenericHeader
+    if (shouldUseGenericHeader) {
+      return Scaffold(
+        appBar: genericHeader,
+        body: content,
+        drawer: drawer ?? (includeDrawer ? const AppDrawer() : null),
+        floatingActionButton: floatingActionButton,
+        bottomNavigationBar: bottom,
+      );
+    }
+
+    // Use PlatformPageScaffold for Cupertino
     return PlatformPageScaffold(
       appBar: buildAppBar(),
       body: content,

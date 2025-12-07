@@ -7,6 +7,7 @@ export 'cupertino_status_bar.dart';
 export 'editor_extensions.dart';
 export 'empty_message.dart';
 export 'expansion_wrap.dart';
+export 'generic_header.dart';
 export 'ical_composer.dart';
 export 'ical_interactive_media.dart';
 export 'icon_text.dart';
