@@ -87,10 +87,9 @@ GoRoute get _accountAddRoute => GoRoute(
       builder: (context, state) => const AccountAddScreen(),
     );
 GoRoute get _welcomeRoute => GoRoute(
-      name: Routes.welcome,
-      path: Routes.welcome,
-      builder: (context, state) => const WelcomeScreen(),
-    );
+    name: Routes.welcome,
+    path: Routes.welcome,
+    builder: (context, state) => const AppDrawer());
 
 GoRoute get _mailRoute => GoRoute(
       name: Routes.mail,

@@ -26,10 +26,10 @@ class EMailScreen extends ConsumerWidget {
 
     if (account == null) {
       if (ref.read(realAccountsProvider).isEmpty) {
-        return const WelcomeScreen();
+        throw Exception('No account found for email: $email');
+      } else {
+        return const MailScreenForDefaultAccount();
       }
-
-      return const MailScreenForDefaultAccount();
     }
 
     if (encodedMailboxPath == null) {
