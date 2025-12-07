@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../app_lifecycle/provider.dart';
@@ -10,7 +11,7 @@ part 'provider.g.dart';
 
 /// The default color provider
 @Riverpod(keepAlive: true)
-Color defaultColorSeed(DefaultColorSeedRef ref) => Colors.green;
+Color defaultColorSeed(Ref ref) => Colors.green;
 
 /// Provides the settings
 @Riverpod(keepAlive: true)

@@ -46,7 +46,7 @@ class EnoughMailApp extends HookConsumerWidget {
 
     useOnAppLifecycleStateChange((previous, current) {
       logger.d('raw AppLifecycleState changed from $previous to $current');
-      ref.read(rawAppLifecycleStateProvider.notifier).state = current;
+      ref.read(rawAppLifecycleStateProvider.notifier).set(current);
     });
 
     final themeSettingsData = ref.watch(themeFinderProvider(context: context));

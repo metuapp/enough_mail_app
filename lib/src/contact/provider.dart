@@ -12,7 +12,7 @@ part 'provider.g.dart';
 /// Loads the contacts for the given [account]
 @Riverpod(keepAlive: true)
 Future<ContactManager> contactsLoader(
-  ContactsLoaderRef ref, {
+  Ref ref, {
   required RealAccount account,
 }) async {
   final mailClient = EmailService.instance

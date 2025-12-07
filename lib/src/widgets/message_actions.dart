@@ -651,7 +651,7 @@ class MessageActions extends HookConsumerWidget {
     Future? composeFuture,
   ]) {
     final formatPreference = ref.read(settingsProvider).replyFormatPreference;
-    ComposeMode mode;
+    ComposeMode mode = ComposeMode.html;
     switch (formatPreference) {
       case ReplyFormatPreference.alwaysHtml:
         mode = ComposeMode.html;

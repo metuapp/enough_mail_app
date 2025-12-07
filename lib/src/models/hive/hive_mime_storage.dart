@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../logger.dart';
 import '../offline_mime_storage.dart';
 
-part 'hive_mime_storage.g.dart';
+// part 'hive_mime_storage.g.dart';
 
 /// A mime storage using Hive as its backend
 ///
@@ -57,9 +57,9 @@ class HiveMailboxMimeStorage extends OfflineMimeStorage {
       '${mailAccount.email}_${mailbox.encodedPath.replaceAll('/', '_')}_$name';
 
   static Future<void> initGlobal() async {
-    Hive
-      ..registerAdapter(StorageMessageIdAdapter())
-      ..registerAdapter(StorageMessageEnvelopeAdapter());
+    // Hive
+    //   ..registerAdapter(StorageMessageIdAdapter())
+    //   ..registerAdapter(StorageMessageEnvelopeAdapter());
     await Hive.initFlutter();
   }
 

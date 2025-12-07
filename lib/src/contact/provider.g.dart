@@ -6,165 +6,88 @@ part of 'provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$contactsLoaderHash() => r'2205f8a929faafca4bbffe075c2e3f2961194cbb';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 /// Loads the contacts for the given [account]
-///
-/// Copied from [contactsLoader].
+
 @ProviderFor(contactsLoader)
-const contactsLoaderProvider = ContactsLoaderFamily();
+const contactsLoaderProvider = ContactsLoaderFamily._();
 
 /// Loads the contacts for the given [account]
-///
-/// Copied from [contactsLoader].
-class ContactsLoaderFamily extends Family<AsyncValue<ContactManager>> {
+
+final class ContactsLoaderProvider extends $FunctionalProvider<
+        AsyncValue<ContactManager>, ContactManager, FutureOr<ContactManager>>
+    with $FutureModifier<ContactManager>, $FutureProvider<ContactManager> {
   /// Loads the contacts for the given [account]
-  ///
-  /// Copied from [contactsLoader].
-  const ContactsLoaderFamily();
-
-  /// Loads the contacts for the given [account]
-  ///
-  /// Copied from [contactsLoader].
-  ContactsLoaderProvider call({
-    required RealAccount account,
-  }) {
-    return ContactsLoaderProvider(
-      account: account,
-    );
-  }
-
-  @override
-  ContactsLoaderProvider getProviderOverride(
-    covariant ContactsLoaderProvider provider,
-  ) {
-    return call(
-      account: provider.account,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'contactsLoaderProvider';
-}
-
-/// Loads the contacts for the given [account]
-///
-/// Copied from [contactsLoader].
-class ContactsLoaderProvider extends FutureProvider<ContactManager> {
-  /// Loads the contacts for the given [account]
-  ///
-  /// Copied from [contactsLoader].
-  ContactsLoaderProvider({
-    required RealAccount account,
-  }) : this._internal(
-          (ref) => contactsLoader(
-            ref as ContactsLoaderRef,
-            account: account,
-          ),
-          from: contactsLoaderProvider,
+  const ContactsLoaderProvider._(
+      {required ContactsLoaderFamily super.from,
+      required RealAccount super.argument})
+      : super(
+          retry: null,
           name: r'contactsLoaderProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$contactsLoaderHash,
-          dependencies: ContactsLoaderFamily._dependencies,
-          allTransitiveDependencies:
-              ContactsLoaderFamily._allTransitiveDependencies,
-          account: account,
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  ContactsLoaderProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.account,
-  }) : super.internal();
-
-  final RealAccount account;
+  @override
+  String debugGetCreateSourceHash() => _$contactsLoaderHash();
 
   @override
-  Override overrideWith(
-    FutureOr<ContactManager> Function(ContactsLoaderRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ContactsLoaderProvider._internal(
-        (ref) => create(ref as ContactsLoaderRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        account: account,
-      ),
-    );
+  String toString() {
+    return r'contactsLoaderProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  FutureProviderElement<ContactManager> createElement() {
-    return _ContactsLoaderProviderElement(this);
+  $FutureProviderElement<ContactManager> $createElement(
+          $ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ContactManager> create(Ref ref) {
+    final argument = this.argument as RealAccount;
+    return contactsLoader(
+      ref,
+      account: argument,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ContactsLoaderProvider && other.account == account;
+    return other is ContactsLoaderProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, account.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-mixin ContactsLoaderRef on FutureProviderRef<ContactManager> {
-  /// The parameter `account` of this provider.
-  RealAccount get account;
-}
+String _$contactsLoaderHash() => r'72e7ccfee5e1e7cd60326ac3c31b2cb4dc79be42';
 
-class _ContactsLoaderProviderElement
-    extends FutureProviderElement<ContactManager> with ContactsLoaderRef {
-  _ContactsLoaderProviderElement(super.provider);
+/// Loads the contacts for the given [account]
+
+final class ContactsLoaderFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<ContactManager>, RealAccount> {
+  const ContactsLoaderFamily._()
+      : super(
+          retry: null,
+          name: r'contactsLoaderProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: false,
+        );
+
+  /// Loads the contacts for the given [account]
+
+  ContactsLoaderProvider call({
+    required RealAccount account,
+  }) =>
+      ContactsLoaderProvider._(argument: account, from: this);
 
   @override
-  RealAccount get account => (origin as ContactsLoaderProvider).account;
+  String toString() => r'contactsLoaderProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
