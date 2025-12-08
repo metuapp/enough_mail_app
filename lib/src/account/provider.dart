@@ -23,7 +23,7 @@ class RealAccounts extends _$RealAccounts {
     _storage = const AccountStorage();
     final accounts = await _storage.loadAccounts();
     if (accounts.isNotEmpty) {
-      ref.read(currentAccountProvider.notifier).state = accounts.first;
+      ref.read(currentAccountProvider.notifier).set(accounts.first);
     }
     state = accounts;
   }
@@ -33,7 +33,7 @@ class RealAccounts extends _$RealAccounts {
     final cleanState = state.toList()..removeWhere((a) => a.key == account.key);
     state = [...cleanState, account];
     if (state.length == 1) {
-      ref.read(currentAccountProvider.notifier).state = account;
+      ref.read(currentAccountProvider.notifier).set(account);
     }
     _saveAccounts();
   }
@@ -43,7 +43,7 @@ class RealAccounts extends _$RealAccounts {
     state = state.where((a) => a.key != account.key).toList();
     if (ref.read(currentAccountProvider) == account) {
       final replacement = state.isEmpty ? null : state.first;
-      ref.read(currentAccountProvider.notifier).state = replacement;
+      ref.read(currentAccountProvider.notifier).set(replacement);
     }
     _saveAccounts();
   }
@@ -61,7 +61,7 @@ class RealAccounts extends _$RealAccounts {
     final newState = state.toList()..[index] = newAccount;
     state = newState;
     if (ref.read(currentAccountProvider) == oldAccount) {
-      ref.read(currentAccountProvider.notifier).state = newAccount;
+      ref.read(currentAccountProvider.notifier).set(newAccount);
     }
     if (save) {
       _saveAccounts();
@@ -91,7 +91,7 @@ class RealAccounts extends _$RealAccounts {
 
 /// Generates a list of senders for composing a new message
 @riverpod
-List<Sender> senders(SendersRef ref) {
+List<Sender> senders(Ref ref) {
   final accounts = ref.watch(realAccountsProvider);
   final senders = <Sender>[];
   for (final account in accounts) {
@@ -106,7 +106,7 @@ List<Sender> senders(SendersRef ref) {
 
 /// Provides the unified account, if any
 @Riverpod(keepAlive: true)
-UnifiedAccount? unifiedAccount(UnifiedAccountRef ref) {
+UnifiedAccount? unifiedAccount(Ref ref) {
   final allRealAccounts = ref.watch(realAccountsProvider);
   final accounts = allRealAccounts.where((a) => !a.excludeFromUnified).toList();
   if (accounts.length <= 1) {
@@ -116,7 +116,7 @@ UnifiedAccount? unifiedAccount(UnifiedAccountRef ref) {
   final currentAccount = ref.read(currentAccountProvider);
   Future.delayed(const Duration(milliseconds: 20)).then((_) {
     if (currentAccount == null || currentAccount is RealAccount) {
-      ref.read(currentAccountProvider.notifier).state = account;
+      ref.read(currentAccountProvider.notifier).set(account);
     }
   });
 
@@ -142,7 +142,7 @@ class AllAccounts extends _$AllAccounts {
 //// Finds an account by its email
 @Riverpod(keepAlive: true)
 Account? findAccountByEmail(
-  FindAccountByEmailRef ref, {
+  Ref ref, {
   required String email,
 }) {
   final key = email.toLowerCase();
@@ -156,7 +156,7 @@ Account? findAccountByEmail(
 //// Finds a real account by its email
 @Riverpod(keepAlive: true)
 RealAccount? findRealAccountByEmail(
-  FindRealAccountByEmailRef ref, {
+  Ref ref, {
   required String email,
 }) {
   final key = email.toLowerCase();
@@ -168,7 +168,7 @@ RealAccount? findRealAccountByEmail(
 //// Checks if there is at least one real account with a login error
 @Riverpod(keepAlive: true)
 bool hasAccountWithError(
-  HasAccountWithErrorRef ref,
+  Ref ref,
 ) {
   final realAccounts = ref.watch(realAccountsProvider);
 
@@ -176,11 +176,17 @@ bool hasAccountWithError(
 }
 
 /// Provides the locally current active account
-final currentAccountProvider = StateProvider<Account?>((ref) => null);
+@Riverpod(keepAlive: true)
+class CurrentAccount extends _$CurrentAccount {
+  @override
+  Account? build() => null;
+
+  void set(Account? value) => state = value;
+}
 
 /// Provides the current real account
 @riverpod
-RealAccount? currentRealAccount(CurrentRealAccountRef ref) {
+RealAccount? currentRealAccount(Ref ref) {
   final realAccounts = ref.watch(realAccountsProvider);
   final providedCurrentAccount = ref.watch(currentAccountProvider);
 

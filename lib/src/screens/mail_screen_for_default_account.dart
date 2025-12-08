@@ -11,7 +11,7 @@ class MailScreenForDefaultAccount extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final accounts = ref.watch(allAccountsProvider);
+    final accounts = ref.watch(realAccountsProvider);
     if (accounts.isEmpty) {
       return const WelcomeScreen();
     }

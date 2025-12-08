@@ -46,8 +46,8 @@ class MailScreen extends HookConsumerWidget {
       // set the account and mailbox:
       useMemoized(() async {
         await Future.delayed(const Duration(milliseconds: 10));
-        ref.read(currentAccountProvider.notifier).state = account;
-        ref.read(currentMailboxProvider.notifier).state = mailbox;
+        ref.read(currentAccountProvider.notifier).set(account);
+        ref.read(currentMailboxProvider.notifier).set(mailbox);
       });
     }
 
@@ -57,8 +57,10 @@ class MailScreen extends HookConsumerWidget {
 
     return ProviderScope(
       overrides: [
-        currentMailboxProvider.overrideWith((ref) => mailbox),
-        currentAccountProvider.overrideWith((ref) => account),
+        currentMailboxProvider
+            .overrideWith(() => _CurrentMailboxOverride(mailbox)),
+        currentAccountProvider
+            .overrideWith(() => _CurrentAccountOverride(account)),
       ],
       child: sourceFuture.when(
         loading: () => showSplashWhileLoading
@@ -78,4 +80,18 @@ class MailScreen extends HookConsumerWidget {
       ),
     );
   }
+}
+
+class _CurrentMailboxOverride extends CurrentMailbox {
+  _CurrentMailboxOverride(this._initial);
+  final Mailbox? _initial;
+  @override
+  Mailbox? build() => _initial;
+}
+
+class _CurrentAccountOverride extends CurrentAccount {
+  _CurrentAccountOverride(this._initial);
+  final Account? _initial;
+  @override
+  Account? build() => _initial;
 }

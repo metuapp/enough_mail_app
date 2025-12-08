@@ -7,8 +7,13 @@ import '../logger.dart';
 part 'provider.g.dart';
 
 /// Allows to retrieve the current (raw) app life cycle
-final rawAppLifecycleStateProvider =
-    StateProvider<AppLifecycleState>((ref) => AppLifecycleState.resumed);
+@Riverpod(keepAlive: true)
+class RawAppLifecycleState extends _$RawAppLifecycleState {
+  @override
+  AppLifecycleState build() => AppLifecycleState.resumed;
+
+  void set(AppLifecycleState value) => state = value;
+}
 
 /// Allows to retrieve the current (filtered) app life cycle
 @Riverpod(keepAlive: true)
@@ -54,14 +59,14 @@ class AppLifecycle extends _$AppLifecycle {
 
 /// Easy access to be notified when the app is resumed
 @Riverpod(keepAlive: true)
-bool appIsResumed(AppIsResumedRef ref) => ref.watch(
+bool appIsResumed(Ref ref) => ref.watch(
       appLifecycleProvider
           .select((value) => value == AppLifecycleState.resumed),
     );
 
 /// Easy access to be notified when the app is put to the background
 @Riverpod(keepAlive: true)
-bool appIsInactivated(AppIsInactivatedRef ref) => ref.watch(
+bool appIsInactivated(Ref ref) => ref.watch(
       appLifecycleProvider
           .select((value) => value == AppLifecycleState.inactive),
     );

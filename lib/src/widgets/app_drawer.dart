@@ -5,6 +5,7 @@ import 'package:enough_platform_widgets/enough_platform_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 import '../account/model.dart';
 import '../account/provider.dart';
@@ -12,8 +13,8 @@ import '../extensions/extension_action_tile.dart';
 import '../localization/app_localizations.g.dart';
 import '../localization/extension.dart';
 import '../routes/routes.dart';
-import '../settings/theme/icon_service.dart';
 import '../util/localized_dialog_helper.dart';
+import 'generic_header.dart';
 import 'mailbox_tree.dart';
 
 /// Displays the base navigation drawer with all accounts
@@ -26,7 +27,6 @@ class AppDrawer extends ConsumerWidget {
     final accounts = ref.watch(allAccountsProvider);
     final theme = Theme.of(context);
     final localizations = ref.text;
-    final iconService = IconService.instance;
     final currentAccount = ref.watch(currentAccountProvider);
     final hasAccountsWithErrors = ref.watch(hasAccountWithErrorProvider);
 
@@ -34,17 +34,23 @@ class AppDrawer extends ConsumerWidget {
       child: SafeArea(
         child: Column(
           children: [
-            Material(
-              elevation: 18,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: _buildAccountHeader(
-                  context,
-                  currentAccount,
-                  accounts,
-                  theme,
-                ),
+            // Use GenericHeader at the top of drawer
+            GenericHeader(
+              title: 'METU Mail',
+              trailingButton: IconButton(
+                icon: const Icon(HugeIcons.strokeRoundedSettings01),
+                onPressed: () {
+                  if (!useAppDrawerAsRoot) {
+                    context.pop();
+                  }
+                  context.pushNamed(Routes.settings);
+                },
               ),
+              onBackPressed: useAppDrawerAsRoot
+                  ? null
+                  : () {
+                      context.pop();
+                    },
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -52,6 +58,17 @@ class AppDrawer extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Show account details below header
+                      if (currentAccount != null)
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: _buildAccountDetails(
+                            context,
+                            currentAccount,
+                            accounts,
+                            theme,
+                          ),
+                        ),
                       _buildAccountSelection(
                         context,
                         accounts,
@@ -67,7 +84,7 @@ class AppDrawer extends ConsumerWidget {
                         ),
                       const Divider(),
                       PlatformListTile(
-                        leading: Icon(iconService.about),
+                        leading: const Icon(HugeIcons.strokeRoundedHelpCircle),
                         title: Text(localizations.drawerEntryAbout),
                         onTap: () {
                           LocalizedDialogHelper.showAbout(
@@ -80,31 +97,18 @@ class AppDrawer extends ConsumerWidget {
                 ),
               ),
             ),
-            Material(
-              elevation: 18,
-              child: PlatformListTile(
-                leading: Icon(iconService.settings),
-                title: Text(localizations.drawerEntrySettings),
-                onTap: () {
-                  context.pushNamed(Routes.settings);
-                },
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildAccountHeader(
+  Widget _buildAccountDetails(
     BuildContext context,
-    Account? currentAccount,
+    Account currentAccount,
     List<Account> accounts,
     ThemeData theme,
   ) {
-    if (currentAccount == null) {
-      return const SizedBox.shrink();
-    }
     final avatarAccount = currentAccount is RealAccount
         ? currentAccount
         : (currentAccount is UnifiedAccount
@@ -123,7 +127,7 @@ class AppDrawer extends ConsumerWidget {
     final accountNameWithBadge =
         hasError ? badges.Badge(child: accountName) : accountName;
 
-    return PlatformListTile(
+    return InkWell(
       onTap: () {
         if (currentAccount is UnifiedAccount) {
           context.pushNamed(Routes.settingsAccounts);
@@ -136,7 +140,7 @@ class AppDrawer extends ConsumerWidget {
           );
         }
       },
-      title: avatarAccount == null
+      child: avatarAccount == null
           ? const SizedBox.shrink()
           : Row(
               children: [
@@ -212,7 +216,7 @@ class AppDrawer extends ConsumerWidget {
     AppLocalizations localizations,
   ) =>
       PlatformListTile(
-        leading: const Icon(Icons.add),
+        leading: const Icon(HugeIcons.strokeRoundedCalendarAdd01),
         title: Text(localizations.drawerEntryAddAccount),
         onTap: () {
           if (!useAppDrawerAsRoot) {

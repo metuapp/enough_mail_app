@@ -3,6 +3,7 @@ import 'package:enough_mail/enough_mail.dart';
 import 'package:enough_platform_widgets/enough_platform_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class IconService {
   IconService._();
@@ -81,13 +82,13 @@ class IconService {
   IconData get messageActionAddNotification =>
       _isCupertino ? CupertinoIcons.alarm : Icons.notification_add;
 
-  IconData get folderGeneric => CommunityMaterialIcons.folder_outline;
-  IconData get folderInbox => CommunityMaterialIcons.inbox;
-  IconData get folderDrafts => CommunityMaterialIcons.email_edit_outline;
-  IconData get folderTrash => CommunityMaterialIcons.trash_can_outline;
-  IconData get folderSent => CommunityMaterialIcons.inbox_arrow_up;
-  IconData get folderArchive => CommunityMaterialIcons.archive_outline;
-  IconData get folderJunk => CommunityMaterialIcons.bug_outline;
+  IconData get folderGeneric => HugeIcons.strokeRoundedFolder01;
+  IconData get folderInbox => HugeIcons.strokeRoundedInbox;
+  IconData get folderDrafts => HugeIcons.strokeRoundedEdit02;
+  IconData get folderTrash => HugeIcons.strokeRoundedDelete02;
+  IconData get folderSent => HugeIcons.strokeRoundedMailSend01;
+  IconData get folderArchive => HugeIcons.strokeRoundedArchive03;
+  IconData get folderJunk => HugeIcons.strokeRoundedBug01;
 
   IconData getForMediaType(MediaType? mediaType) {
     if (mediaType == null) {

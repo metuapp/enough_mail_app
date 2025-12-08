@@ -6,196 +6,158 @@ part of 'provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$defaultColorSeedHash() => r'c2bdee6a44fad5bfcada3d31af099906bb24c988';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// The default color provider
+/// Using METU primary blue instead of green
+
+@ProviderFor(defaultColorSeed)
+const defaultColorSeedProvider = DefaultColorSeedProvider._();
 
 /// The default color provider
-///
-/// Copied from [defaultColorSeed].
-@ProviderFor(defaultColorSeed)
-final defaultColorSeedProvider = Provider<Color>.internal(
-  defaultColorSeed,
-  name: r'defaultColorSeedProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$defaultColorSeedHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+/// Using METU primary blue instead of green
 
-typedef DefaultColorSeedRef = ProviderRef<Color>;
-String _$themeFinderHash() => r'484171788a33fa10e91e0f085a1c87cb4a29d8f0';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$ThemeFinder extends BuildlessNotifier<ThemeSettingsData> {
-  late final BuildContext context;
-
-  ThemeSettingsData build({
-    required BuildContext context,
-  });
-}
-
-/// Provides the settings
-///
-/// Copied from [ThemeFinder].
-@ProviderFor(ThemeFinder)
-const themeFinderProvider = ThemeFinderFamily();
-
-/// Provides the settings
-///
-/// Copied from [ThemeFinder].
-class ThemeFinderFamily extends Family<ThemeSettingsData> {
-  /// Provides the settings
-  ///
-  /// Copied from [ThemeFinder].
-  const ThemeFinderFamily();
-
-  /// Provides the settings
-  ///
-  /// Copied from [ThemeFinder].
-  ThemeFinderProvider call({
-    required BuildContext context,
-  }) {
-    return ThemeFinderProvider(
-      context: context,
-    );
-  }
-
-  @override
-  ThemeFinderProvider getProviderOverride(
-    covariant ThemeFinderProvider provider,
-  ) {
-    return call(
-      context: provider.context,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'themeFinderProvider';
-}
-
-/// Provides the settings
-///
-/// Copied from [ThemeFinder].
-class ThemeFinderProvider
-    extends NotifierProviderImpl<ThemeFinder, ThemeSettingsData> {
-  /// Provides the settings
-  ///
-  /// Copied from [ThemeFinder].
-  ThemeFinderProvider({
-    required BuildContext context,
-  }) : this._internal(
-          () => ThemeFinder()..context = context,
-          from: themeFinderProvider,
-          name: r'themeFinderProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$themeFinderHash,
-          dependencies: ThemeFinderFamily._dependencies,
-          allTransitiveDependencies:
-              ThemeFinderFamily._allTransitiveDependencies,
-          context: context,
+final class DefaultColorSeedProvider
+    extends $FunctionalProvider<Color, Color, Color> with $Provider<Color> {
+  /// The default color provider
+  /// Using METU primary blue instead of green
+  const DefaultColorSeedProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'defaultColorSeedProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
         );
 
-  ThemeFinderProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.context,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$defaultColorSeedHash();
 
-  final BuildContext context;
+  @$internal
+  @override
+  $ProviderElement<Color> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  ThemeSettingsData runNotifierBuild(
-    covariant ThemeFinder notifier,
-  ) {
-    return notifier.build(
-      context: context,
-    );
+  Color create(Ref ref) {
+    return defaultColorSeed(ref);
   }
 
-  @override
-  Override overrideWith(ThemeFinder Function() create) {
-    return ProviderOverride(
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Color value) {
+    return $ProviderOverride(
       origin: this,
-      override: ThemeFinderProvider._internal(
-        () => create()..context = context,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        context: context,
-      ),
+      providerOverride: $SyncValueProvider<Color>(value),
     );
   }
+}
+
+String _$defaultColorSeedHash() => r'a0a9a76470a49c5175c78e687ef3ee5b4b3d5746';
+
+/// Provides the settings
+
+@ProviderFor(ThemeFinder)
+const themeFinderProvider = ThemeFinderFamily._();
+
+/// Provides the settings
+final class ThemeFinderProvider
+    extends $NotifierProvider<ThemeFinder, ThemeSettingsData> {
+  /// Provides the settings
+  const ThemeFinderProvider._(
+      {required ThemeFinderFamily super.from,
+      required BuildContext super.argument})
+      : super(
+          retry: null,
+          name: r'themeFinderProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
 
   @override
-  NotifierProviderElement<ThemeFinder, ThemeSettingsData> createElement() {
-    return _ThemeFinderProviderElement(this);
+  String debugGetCreateSourceHash() => _$themeFinderHash();
+
+  @override
+  String toString() {
+    return r'themeFinderProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  ThemeFinder create() => ThemeFinder();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ThemeSettingsData value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ThemeSettingsData>(value),
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ThemeFinderProvider && other.context == context;
+    return other is ThemeFinderProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, context.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-mixin ThemeFinderRef on NotifierProviderRef<ThemeSettingsData> {
-  /// The parameter `context` of this provider.
-  BuildContext get context;
-}
+String _$themeFinderHash() => r'c92545bdb8b06520cd5054fbee7a682dc82ea856';
 
-class _ThemeFinderProviderElement
-    extends NotifierProviderElement<ThemeFinder, ThemeSettingsData>
-    with ThemeFinderRef {
-  _ThemeFinderProviderElement(super.provider);
+/// Provides the settings
+
+final class ThemeFinderFamily extends $Family
+    with
+        $ClassFamilyOverride<ThemeFinder, ThemeSettingsData, ThemeSettingsData,
+            ThemeSettingsData, BuildContext> {
+  const ThemeFinderFamily._()
+      : super(
+          retry: null,
+          name: r'themeFinderProvider',
+          dependencies: null,
+          $allTransitiveDependencies: null,
+          isAutoDispose: false,
+        );
+
+  /// Provides the settings
+
+  ThemeFinderProvider call({
+    required BuildContext context,
+  }) =>
+      ThemeFinderProvider._(argument: context, from: this);
 
   @override
-  BuildContext get context => (origin as ThemeFinderProvider).context;
+  String toString() => r'themeFinderProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+
+/// Provides the settings
+
+abstract class _$ThemeFinder extends $Notifier<ThemeSettingsData> {
+  late final _$args = ref.$arg as BuildContext;
+  BuildContext get context => _$args;
+
+  ThemeSettingsData build({
+    required BuildContext context,
+  });
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(
+      context: _$args,
+    );
+    final ref = this.ref as $Ref<ThemeSettingsData, ThemeSettingsData>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<ThemeSettingsData, ThemeSettingsData>,
+        ThemeSettingsData,
+        Object?,
+        Object?>;
+    element.handleValue(ref, created);
+  }
+}

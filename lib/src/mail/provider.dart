@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:enough_mail/enough_mail.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../account/model.dart';
@@ -27,7 +26,7 @@ class Source extends _$Source {
     Mailbox? mailbox,
   }) {
     Future.delayed(const Duration(milliseconds: 10)).then(
-      (_) => ref.read(currentMailboxProvider.notifier).state = mailbox,
+      (_) => ref.read(currentMailboxProvider.notifier).set(mailbox),
     );
     final usedMailbox = mailbox?.isInbox ?? true ? null : mailbox;
     if (account is RealAccount) {
@@ -140,7 +139,7 @@ class RealSource extends _$RealSource {
 //// Loads the mailbox tree for the given account
 @Riverpod(keepAlive: true)
 Future<Tree<Mailbox?>> mailboxTree(
-  MailboxTreeRef ref, {
+  Ref ref, {
   required Account account,
 }) async {
   logger.d('Creating mailbox tree for ${account.key}');
@@ -169,7 +168,7 @@ Future<Tree<Mailbox?>> mailboxTree(
 //// Loads the mailbox tree for the given account
 @riverpod
 Future<Mailbox?> findMailbox(
-  FindMailboxRef ref, {
+  Ref ref, {
   required Account account,
   required String encodedMailboxPath,
 }) async {
@@ -324,7 +323,7 @@ class MailClientSource extends _$MailClientSource {
 /// Carries out a search for mail messages
 @riverpod
 Future<MessageSource> mailSearch(
-  MailSearchRef ref, {
+  Ref ref, {
   required AppLocalizations localizations,
   required MailSearch search,
 }) async {
@@ -338,7 +337,7 @@ Future<MessageSource> mailSearch(
 /// Loads the message source for the given payload
 @riverpod
 Future<Message> singleMessageLoader(
-  SingleMessageLoaderRef ref, {
+  Ref ref, {
   required MailNotificationPayload payload,
 }) async {
   final account = ref.watch(
@@ -355,7 +354,7 @@ Future<Message> singleMessageLoader(
 /// Provides mail clients
 @riverpod
 Future<ConnectedAccount?> firstTimeMailClientSource(
-  FirstTimeMailClientSourceRef ref, {
+  Ref ref, {
   required RealAccount account,
   Mailbox? mailbox,
 }) =>
@@ -369,7 +368,7 @@ Future<ConnectedAccount?> firstTimeMailClientSource(
 /// Creates a new [MessageBuilder] based on the given [mailtoUri] uri
 @riverpod
 MessageBuilder mailto(
-  MailtoRef ref, {
+  Ref ref, {
   required Uri mailtoUri,
   required MimeMessage originatingMessage,
 }) {
@@ -389,8 +388,14 @@ MessageBuilder mailto(
     fromAddress ??= searchFor.first;
   }
 
-  return MessageBuilder.prepareMailtoBasedMessage(mailtoUri, fromAddress);
+  return MessageBuilder.prepareMailtoBasedMessage(mailtoUri, fromAddress!);
 }
 
 /// Provides the locally current active mailbox
-final currentMailboxProvider = StateProvider<Mailbox?>((ref) => null);
+@Riverpod(keepAlive: true)
+class CurrentMailbox extends _$CurrentMailbox {
+  @override
+  Mailbox? build() => null;
+
+  void set(Mailbox? value) => state = value;
+}

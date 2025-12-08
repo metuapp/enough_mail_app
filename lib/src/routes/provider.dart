@@ -20,7 +20,7 @@ part 'provider.g.dart';
 
 /// Provides the [GoRouter] configuration
 @Riverpod(keepAlive: true)
-GoRouter routerConfig(RouterConfigRef ref) => standardRouterConfig;
+GoRouter routerConfig(Ref ref) => standardRouterConfig;
 
 /// The standard [GoRouter] configuration
 GoRouter get standardRouterConfig => GoRouter(
@@ -87,10 +87,9 @@ GoRoute get _accountAddRoute => GoRoute(
       builder: (context, state) => const AccountAddScreen(),
     );
 GoRoute get _welcomeRoute => GoRoute(
-      name: Routes.welcome,
-      path: Routes.welcome,
-      builder: (context, state) => const WelcomeScreen(),
-    );
+    name: Routes.welcome,
+    path: Routes.welcome,
+    builder: (context, state) => const AppDrawer());
 
 GoRoute get _mailRoute => GoRoute(
       name: Routes.mail,
