@@ -34,68 +34,66 @@ class GenericHeader extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBackPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: MediaQuery.of(context).padding.top + 20,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
+  Widget build(BuildContext context) => Container(
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: MediaQuery.of(context).padding.top + 20,
         ),
-        border: const Border(
-          bottom: BorderSide(
-            color: Color.fromARGB(255, 205, 0, 0),
-            width: 4,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(30),
+            bottomRight: Radius.circular(30),
+          ),
+          border: const Border(
+            bottom: BorderSide(
+              color: Color.fromARGB(255, 205, 0, 0),
+              width: 4,
+            ),
           ),
         ),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: const Icon(HugeIcons.strokeRoundedArrowLeft02),
-                iconSize: 20,
-                onPressed: onBackPressed ??
-                    () {
-                      // Try to pop from current router
-                      if (context.canPop()) {
-                        context.pop();
-                      } else {
-                        Navigator.of(context, rootNavigator: true).maybePop();
-                      }
-                    },
-              ),
-              const SizedBox(width: 48),
-              Expanded(
-                child: SizedBox(
-                  height: 24,
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: const Icon(HugeIcons.strokeRoundedArrowLeft02),
+                  iconSize: 20,
+                  onPressed: onBackPressed ??
+                      () {
+                        // Try to pop from current router
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          Navigator.of(context, rootNavigator: true).maybePop();
+                        }
+                      },
+                ),
+                const SizedBox(width: 48),
+                Expanded(
+                  child: SizedBox(
+                    height: 24,
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ),
-              secondTrailingButton,
-              trailingButton,
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+                secondTrailingButton,
+                trailingButton,
+              ],
+            ),
+          ],
+        ),
+      );
 
   @override
   Size get preferredSize => const Size.fromHeight(75);

@@ -181,12 +181,11 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
           },
         ),
       if (PlatformInfo.isCupertino)
-        CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: Text(
+        PlatformIconButton(
+          icon: Icon(
             _isInSelectionMode
-                ? localizations.actionCancel
-                : localizations.actionEdit,
+                ? HugeIcons.strokeRoundedEditOff
+                : HugeIcons.strokeRoundedEdit02,
           ),
           onPressed: () {
             setState(() {
