@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:enough_mail/enough_mail.dart';
 import 'package:enough_platform_widgets/enough_platform_widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,7 +24,6 @@ import '../settings/provider.dart';
 import '../settings/theme/icon_service.dart';
 import '../util/localized_dialog_helper.dart';
 import '../util/string_helper.dart';
-import '../widgets/search_text_field.dart';
 import '../widgets/widgets.dart';
 import 'base.dart';
 
@@ -54,8 +52,6 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
   late DateSectionedMessageSource _sectionedMessageSource;
   bool _isInSelectionMode = false;
   List<Message> _selectedMessages = [];
-  bool _isInSearchMode = false;
-  bool _hasSearchInput = false;
   late TextEditingController _searchEditingController;
 
   @override
@@ -85,13 +81,70 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
     setState(() {});
   }
 
+  Widget _buildSearchBox(
+    BuildContext context,
+    Color searchColor,
+    AppLocalizations localizations,
+  ) {
+    final controller = _searchEditingController;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.grey,
+          width: 1,
+        ),
+      ),
+      child: SizedBox(
+        height: 40,
+        child: TextField(
+          controller: controller,
+          cursorColor: searchColor,
+          textAlignVertical: TextAlignVertical.center,
+          textInputAction: TextInputAction.search,
+          decoration: InputDecoration(
+            hintText: localizations.homeSearchHint,
+            hintStyle: TextStyle(
+              color: Colors.grey[600],
+              fontWeight: FontWeight.w500,
+            ),
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 10,
+            ),
+            suffixIcon: controller.text.isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.clear, size: 20),
+                    onPressed: () {
+                      controller.clear();
+                      setState(() {});
+                    },
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  )
+                : const SizedBox.shrink(),
+          ),
+          autofocus: true,
+          autocorrect: false,
+          style: TextStyle(
+            color: Colors.grey[800],
+            fontWeight: FontWeight.w500,
+          ),
+          onSubmitted: _search,
+          onChanged: (_) => setState(() {}),
+        ),
+      ),
+    );
+  }
+
   void _search(String query) {
     final trimmedQuery = query.trim();
     if (trimmedQuery.isEmpty) {
-      setState(() {
-        _isInSearchMode = false;
-      });
-
       return;
     }
     final search = MailSearch(trimmedQuery, SearchQueryType.allTextHeaders);
@@ -104,9 +157,6 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
       },
       extra: searchSource,
     );
-    setState(() {
-      _isInSearchMode = false;
-    });
   }
 
   @override
@@ -119,97 +169,29 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
     final searchColor = theme.brightness == Brightness.light
         ? theme.colorScheme.onSecondary
         : theme.colorScheme.onPrimary;
-    final appBarTitle = _isInSearchMode
-        ? TextField(
-            cursorColor: searchColor,
-            controller: _searchEditingController,
-            textInputAction: TextInputAction.search,
-            decoration: InputDecoration(
-              hintText: localizations.homeSearchHint,
-              hintStyle: TextStyle(
-                color: searchColor.withAlpha(0xa0),
-              ),
-            ),
-            autofocus: true,
-            autocorrect: false,
-            style: TextStyle(
-              color: searchColor,
-            ),
-            onSubmitted: _search,
-            onChanged: (text) {
-              if (text.isNotEmpty != _hasSearchInput) {
-                setState(() {
-                  _hasSearchInput = text.isNotEmpty;
-                });
-              }
-            },
-          )
-        : (PlatformInfo.isCupertino)
-            ? Text(source.localizedName(localizations, settings))
-            : BaseTitle(
-                title: source.localizedName(localizations, settings),
-                subtitle: source.description,
-              );
+    final appBarTitle = BaseTitle(
+      title: source.localizedName(localizations, settings),
+      subtitle: source.description,
+    );
 
-    final appBarActions = [
-      if (_isInSearchMode && _hasSearchInput)
-        IconButton(
-          icon: const Icon(HugeIcons.strokeRoundedCancel01),
-          onPressed: () {
-            _searchEditingController.text = '';
-            setState(() {
-              _hasSearchInput = false;
-            });
-          },
-        ),
+    final editAction = IconButton(
+      icon: Icon(
+        _isInSelectionMode
+            ? HugeIcons.strokeRoundedEditOff
+            : HugeIcons.strokeRoundedEdit02,
+      ),
+      onPressed: () {
+        if (_isInSelectionMode) {
+          leaveSelectionMode();
+        } else {
+          setState(() {
+            _isInSelectionMode = true;
+          });
+        }
+      },
+    );
 
-      if (source.supportsSearching && !PlatformInfo.isCupertino)
-        PlatformIconButton(
-          icon: Icon(_isInSearchMode
-              ? HugeIcons.strokeRoundedArrowLeft02
-              : HugeIcons.strokeRoundedSearch01),
-          onPressed: () {
-            if (_isInSearchMode) {
-              setState(() {
-                _isInSearchMode = false;
-              });
-            } else {
-              setState(() {
-                _isInSearchMode = true;
-              });
-            }
-          },
-        ),
-      if (PlatformInfo.isCupertino)
-        PlatformIconButton(
-          icon: Icon(
-            _isInSelectionMode
-                ? HugeIcons.strokeRoundedEditOff
-                : HugeIcons.strokeRoundedEdit02,
-          ),
-          onPressed: () {
-            setState(() {
-              _isInSelectionMode = !_isInSelectionMode;
-            });
-          },
-        ),
-
-      // if (!_isInSearchMode)
-      //   PlatformPopupMenuButton<_Visualization>(
-      //     onSelected: switchVisualization,
-      //     itemBuilder: (context) => [
-      //       _visualization == _Visualization.list
-      //           ? PlatformPopupMenuItem<_Visualization>(
-      //               value: _Visualization.stack,
-      //               child: Text(localizations.homeActionsShowAsStack),
-      //             )
-      //           : PlatformPopupMenuItem<_Visualization>(
-      //               value: _Visualization.list,
-      //               child: Text(localizations.homeActionsShowAsList),
-      //             ),
-      //     ],
-      //   ),
-    ];
+    const appBarActions = <Widget>[];
     Widget? zeroPosWidget;
     if (_sectionedMessageSource.isInitialized && source.size == 0) {
       final emptyMessage = source.isSearch
@@ -256,30 +238,12 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
       );
     }
     final isSentFolder = source.isSent;
-    final showSearchTextField =
-        PlatformInfo.isCupertino && source.supportsSearching;
     final hasAccountWithError = ref.watch(hasAccountWithErrorProvider);
 
     return PlatformPageScaffold(
       bottomBar: _isInSelectionMode
           ? buildSelectionModeBottomBar(localizations)
-          : PlatformInfo.isCupertino
-              ? CupertinoStatusBar(
-                  info: CupertinoStatusBar.createInfo(source.description),
-                  rightAction: PlatformIconButton(
-                    // TODO(RV): use CupertinoIcons.create once available
-                    icon: const Icon(CupertinoIcons.pen),
-                    onPressed: () => context.pushNamed(
-                      Routes.mailCompose,
-                      extra: ComposeData(
-                        null,
-                        MessageBuilder(),
-                        ComposeAction.newMessage,
-                      ),
-                    ),
-                  ),
-                )
-              : null,
+          : null,
       material: (context, platform) => MaterialScaffoldData(
         drawer: const AppDrawer(),
         floatingActionButton: _visualization == _Visualization.stack
@@ -356,48 +320,28 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
                       // Use GenericHeader for METU app styling
                       SliverToBoxAdapter(
                         child: GenericHeader(
-                          title: _isInSearchMode
-                              ? localizations.homeSearchHint
-                              : source.localizedName(localizations, settings),
-                          trailingButton: appBarActions.isNotEmpty
-                              ? appBarActions.last
-                              : const SizedBox(width: 48),
-                          secondTrailingButton: appBarActions.length > 1
-                              ? appBarActions[appBarActions.length - 2]
-                              : const SizedBox(width: 48),
+                          title: source.localizedName(localizations, settings),
+                          trailingButton: editAction,
+                          secondTrailingButton: const SizedBox(width: 48),
                           onBackPressed: hasAccountWithError
                               ? () {
                                   Scaffold.of(context).openDrawer();
                                 }
-                              : (_isInSearchMode
-                                  ? () {
-                                      setState(() {
-                                        _isInSearchMode = false;
-                                      });
-                                    }
-                                  : null),
+                              : null,
                         ),
                       ),
-                      // Show search field below header when in search mode
-                      if (_isInSearchMode && appBarTitle is TextField)
+                      if (_visualization != _Visualization.stack &&
+                          source.supportsSearching)
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 20,
                               vertical: 8,
                             ),
-                            child: appBarTitle,
-                          ),
-                        ),
-                      if (showSearchTextField)
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            child: CupertinoSearch(
-                              messageSource: source,
+                            child: _buildSearchBox(
+                              context,
+                              searchColor,
+                              localizations,
                             ),
                           ),
                         ),
