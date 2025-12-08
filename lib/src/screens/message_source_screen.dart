@@ -240,10 +240,13 @@ class _MessageSourceScreenState extends ConsumerState<MessageSourceScreen>
     final isSentFolder = source.isSent;
     final hasAccountWithError = ref.watch(hasAccountWithErrorProvider);
 
+    final selectionBottomBar = _isInSelectionMode
+        ? buildSelectionModeBottomBar(localizations)
+        : const SizedBox.shrink();
+
     return PlatformPageScaffold(
-      bottomBar: _isInSelectionMode
-          ? buildSelectionModeBottomBar(localizations)
-          : null,
+      // Keep bottomBar stable to avoid full-page rebuild flicker when toggling
+      bottomBar: selectionBottomBar,
       material: (context, platform) => MaterialScaffoldData(
         drawer: const AppDrawer(),
         floatingActionButton: _visualization == _Visualization.stack
