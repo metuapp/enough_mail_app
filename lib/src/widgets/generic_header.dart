@@ -62,7 +62,15 @@ class GenericHeader extends StatelessWidget implements PreferredSizeWidget {
               IconButton(
                 icon: const Icon(HugeIcons.strokeRoundedArrowLeft02),
                 iconSize: 20,
-                onPressed: onBackPressed ?? context.pop,
+                onPressed: onBackPressed ??
+                    () {
+                      // Try to pop from current router
+                      if (context.canPop()) {
+                        context.pop();
+                      } else {
+                        Navigator.of(context, rootNavigator: true).maybePop();
+                      }
+                    },
               ),
               const SizedBox(width: 48),
               Expanded(
